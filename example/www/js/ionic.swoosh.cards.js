@@ -73,28 +73,93 @@
     destroy: function(duration) {
       var self = this;
       setTimeout(function() {
+        console.log('destroy')
         self.onDestroy && self.onDestroy();
       }, duration);
+    },
+
+    setZindex: function(value, element) {
+      var element = element || this.el;
+      element.style.zIndex = element.style.webkitzIndex = value;
+    },
+
+    setTransform: function(value) {
+      var element = element || this.el;
+      element.style.transform = element.style.webkitTransform = value;
+    },
+
+    setOpacity: function(value, element) {
+      var element = element || this.el;
+      element.style.opacity = element.style.webkitOpacity = value;
+    },
+
+    setBoxShadow: function(value) {
+      var element = element || this.el;
+      element.style.boxShadow = element.style.webkitBoxShadow = value;
+    },
+
+    setTransition: function(value) {
+      var element = element || this.el;
+      element.style.transition = element.style.webkitTransition = value;
     },
 
     /***************
      * Animations
      ***************/
 
-    animateTo: function(x, y) {
-
-    },
-
     // Animation to fly the card away
-    animateFlyAway: function() {
+    animateFlyAway: function(index) {
+
+      console.log('flyaway')
 
       var self = this;
+
+      var card = this.el;
+
+      card.style.transition = card.style.webkitTransition = '';
 
       var top = -600;
       var scale = 180;
 
       var animation = collide.animation({
-        duration: 7000,
+        duration: 1000,
+        percent: 0,
+        reverse: false
+      })
+
+      .easing({
+        type: 'gravity',
+        frequency: 5,
+        friction: 250,
+        initialForce: false
+      })
+
+      .on('step', function(v) {
+        card.style.transformOrigin = card.style.webkitTransformOrigin = '0 50%';
+        card.style.transform = card.style.webkitTransform = 'translate3d(' + top*v + 'px, 0,0) rotate3d(.25, -1, 0, '+ scale*v +'deg)';
+      })
+      .start();
+
+      // Trigger destroy after card has swiped out
+      this.destroy(1000);
+
+    },
+
+
+    // Animation to fly the card away
+    animateStepForward: function(index) {
+
+      var self  = this;
+
+      var card = this.el;
+
+      var overlay = card.childNodes[0].childNodes[0];
+
+      var shadow = (0.5 + (index / 20));
+      var opacity = 0 + (index / 10);
+
+      var animation = collide.animation({
+        duration: 800,
         percent: 0,
         reverse: false
       })
@@ -107,24 +172,59 @@
       })
 
       .on('step', function(v) {
-        self.el.style.transformOrigin = self.el.style.webkitTransformOrigin = '0 50%';
-        self.el.style.transform = self.el.style.webkitTransform = 'translate3d(' + top*v + 'px, 0,0) rotate3d(.25, -1, 0, '+ scale*v +'deg)';
+        self.setTransform('translate3d(' + Math.max(0, (self.top - (30 * v))) + 'px, 0, 0) scale('+ Math.max(0, (self.scale + (0.1 * v))) +')');
+        self.setBoxShadow('0px 50px 100px rgba(0,0,0,'+ shadow +')');
+        self.setOpacity(opacity, overlay);
+      })
+
+      .on('complete', function() {
+        self.top = self.top - 30;
+        self.scale = self.scale + 0.1;
       })
       .start();
 
-      // Trigger destroy after card has swiped out
-      this.destroy(1000);
+    },
+
+    // Animation to fly the card away
+    animateStepBackward: function(index) {
+
+      var self  = this;
+
+      var card = this.el;
+
+      var overlay = card.childNodes[0].childNodes[0];
+
+      self.top = (index * 30);
+      self.scale = Math.max(0, (1 - (index / 10)));
+      self.shadow = (0.5 + (index / 20));
+      self.opacity = 0.2 + (index / 10);
+
+      var animation = collide.animation({
+        duration: 800,
+        percent: 0,
+        reverse: false
+      })
+
+      .easing({
+        type: 'spring',
+        frequency: 5,
+        friction: 250,
+        initialForce: false
+      })
+
+      .on('step', function(v) {
+        self.setTransform('translate3d(' + self.top*v + 'px, 0, 0) scale('+ self.scale*v +')');
+        self.setBoxShadow('0px 50px 100px rgba(0,0,0,'+ self.shadow +')');
+        self.setOpacity(self.opacity, overlay);
+      })
+      .start();
 
     },
+
 
     // Fly the card out or animate back into resting position.
     transitionOut: function(e) {
       var self = this;
-
-      // if(this.isUnderThreshold()) {
-      //   self.onSnapBack(this.x, this.y, this.rotationAngle);
-      //   return;
-      // }
 
       self.animateFlyAway();
 
@@ -137,19 +237,19 @@
     // Bind drag events on the card.
     bindEvents: function() {
       var self = this;
-      ionic.onGesture('dragstart', function(e) {
-        ionic.requestAnimationFrame(function() { self._doDragStart(e) });
-      }, this.el);
+      // ionic.onGesture('dragstart', function(e) {
+      //   ionic.requestAnimationFrame(function() { self._doDragStart(e) });
+      // }, this.el);
 
-      ionic.onGesture('drag', function(e) {
-        ionic.requestAnimationFrame(function() { self._doDrag(e) });
-        // Indicate we want to stop parents from using this
-        e.gesture.srcEvent.preventDefault();
-      }, this.el);
+      // ionic.onGesture('drag', function(e) {
+      //   ionic.requestAnimationFrame(function() { self._doDrag(e) });
+      //   // Indicate we want to stop parents from using this
+      //   e.gesture.srcEvent.preventDefault();
+      // }, this.el);
 
-      ionic.onGesture('dragend', function(e) {
-        ionic.requestAnimationFrame(function() { self._doDragEnd(e) });
-      }, this.el);
+      // ionic.onGesture('dragend', function(e) {
+      //   ionic.requestAnimationFrame(function() { self._doDragEnd(e) });
+      // }, this.el);
     },
 
     // doDragStart
@@ -207,59 +307,15 @@
 
       ionic.extend(this, opts);
 
-      this.el = opts.el;
-
     },
 
-    // Animation to fly the card away
-    animateStepForward: function() {
+    sortCards: function($timeout) {
 
       var self = this;
 
-      var top = -600;
-      var scale = 180;
+      var existingCards = this.collection;
 
-      var animation = collide.animation({
-        duration: 7000,
-        percent: 0,
-        reverse: false
-      })
-
-      .easing({
-        type: 'spring',
-        frequency: 5,
-        friction: 250,
-        initialForce: false
-      })
-
-      .on('step', function(v) {
-        self.el.style.transformOrigin = self.el.style.webkitTransformOrigin = '0 50%';
-        self.el.style.transform = self.el.style.webkitTransform = 'translate3d(' + top*v + 'px, 0,0) rotate3d(.25, -1, 0, '+ scale*v +'deg)';
-      })
-      .start();
-
-      // Trigger destroy after card has swiped out
-      this.destroy(1000);
-
-    },
-
-    moveCardsForward: function () {
-
-      var cards = this.el;
-
-      var max = Math.min(cards.length, 10);
-      for(var i = 1; i < cards.length; i++){
-        bringCardUp(cards[i], amt, 30 * i, i);
-      }
-    },
-
-    sortCards: function($element, $timeout) {
-
-      var self = this;
-
-      this.el = $element[0].querySelectorAll('swoosh-card');
-
-      var existingCards = this.el;
+      console.log(this.collection)
 
       for(i = 0; i < existingCards.length; i++) {
 
@@ -270,42 +326,70 @@
         if(i === 0) {
 
           var overlay = existingCards[i].childNodes[0].childNodes[0];
-          self.setZindex(overlay, 9)
+          existingCards[i].swipeableCard.setZindex(9, overlay);
 
         } else {
 
           (function(j) {
             $timeout(function() {
 
-              var overlay = existingCards[j].childNodes[0].childNodes[0];
-              var top = (j * 30);
-              var scale = Math.max(0, (1 - (j / 10)));
-              var shadow = (0.5 + (j / 20));
-              var opacity = 0.2 + (j / 10);
-              var animation = collide.animation({
-                duration: 800,
-                percent: 0,
-                reverse: false
-              })
+              existingCards[j].swipeableCard.animateStepBackward(j);
 
-              .easing({
-                type: 'spring',
-                frequency: 5,
-                friction: 250,
-                initialForce: false
-              })
-
-              .on('step', function(v) {
-                self.setTransform(existingCards[j],'translate3d(' + top*v + 'px, 0, 0) scale('+ scale*v +')');
-                self.setBoxShadow(existingCards[j], '0px 50px 100px rgba(0,0,0,'+ shadow +')');
-                self.setOpacity(overlay, opacity);
-              })
-              .start();
             }, 100 * j);
           })(i);
+
         }
-        self.setZindex(card, existingCards.length - i);
+        existingCards[i].swipeableCard.setZindex(existingCards.length - i);
       }
+    },
+
+    moveCardsForward: function ($element, $timeout) {
+
+      var self = this;
+
+      var existingCards = $element[0].querySelectorAll('swoosh-card');
+
+      this.collection = existingCards;
+
+      console.log(existingCards)
+
+      for(var i = 0; i < existingCards.length; i++){
+
+        var card = existingCards[i];
+
+        if(i === 0){
+
+          (function(j) {
+            $timeout(function() {
+
+              existingCards[j].swipeableCard.animateFlyAway(existingCards[j], j);
+
+            }, 100 * j);
+
+          })(i);
+
+        } else {
+
+          if(i === 1) {
+
+            var overlay = existingCards[i].childNodes[0].childNodes[0];
+            existingCards[i].swipeableCard.setZindex(9, overlay);
+
+          }
+
+          (function(j) {
+            $timeout(function() {
+
+              existingCards[j].swipeableCard.animateStepForward(j - 1);
+
+            }, 100 * j);
+
+          })(i);
+
+        }
+
+      }
+
     },
 
     bringCardUp: function(card, amt, max, i) {
@@ -329,21 +413,6 @@
      * Utils
      ***************/
 
-    setZindex: function(element, index) {
-      element.style.zIndex = element.style.webkitzIndex = index;
-    },
-
-    setTransform: function(element, value) {
-      element.style.transform = element.style.webkitTransform = value;
-    },
-
-    setOpacity: function(element, value) {
-      element.style.opacity = element.style.webkitOpacity = value;
-    },
-
-    setBoxShadow: function(element, value) {
-      element.style.boxShadow = element.style.webkitBoxShadow = value;
-    },
 
   });
 
@@ -362,8 +431,6 @@
 
       scope: {
         drag: '@',
-        spacing: '@',
-        max: '@',
         animation: '@',
         onTransitionOut: '&',
         onPartialSwipe: '&',
@@ -372,58 +439,42 @@
       },
 
       controller: ['$scope', '$element', function($scope, $element) {
-        // Emits event 'removeCard' which should have a listener in a parent scope
-        $scope.$parent.onClickTransitionOut = function(card) {
-          var element = $scope.$parent.swipeCard;
-          element.onClickTransitionOut();
-          $scope.$emit('removeCard', element, card);
-        }
-      }],
-
-      link: function($scope, $element, $attr, swipeCards) {
 
           var el = $element[0];
 
           // Force hardware acceleration for animation - better performance on first touch
           el.style.transform = el.style.webkitTransform = 'translate3d(0px, 0px, 0px)';
 
-          // Instantiate our card view
-          var swipeableCard = new SwipeableCardView({
-            el: el,
+          $timeout(function() {
 
-            drag: $scope.drag,
+            // Instantiate our card view
+            angular.extend(el.swipeableCard, {
 
-            onPartialSwipe: function(amt) {
-              swipeCards.partial(amt);
-              var self = this;
-              $timeout(function() {
-                $scope.onPartialSwipe({amt: amt});
-              });
-            },
+              drag: $scope.drag,
 
-            onTransitionOut: function(amt) {
-              $timeout(function() {
-                $scope.onTransitionOut({amt: amt});
-              });
-            },
+              onClickTransitionOut: function() {
 
-            onClickTransitionOut: function() {
-              var self = this;
-              self.animateFlyAway();
-            },
+              },
 
-            onDestroy: function() {
-              $timeout(function() {
-                $scope.onDestroy();
-              });
-            }
+              onDestroy: function() {
+                $timeout(function() {
+                  $scope.onDestroy();
+                });
+              }
+
+            });
+
+            $scope.$parent.swipeCard = el;
 
           });
 
-          $scope.$parent.swipeCard = swipeableCard;
+          $scope.$parent.onClickTransitionOut = function(card) {
+            var element = $scope.$parent.swipeCard;
+            element.swipeableCard.onClickTransitionOut();
+            $scope.$emit('removeCard', element, card);
+          }
 
-
-      }
+      }],
     }
   }])
 
@@ -436,14 +487,36 @@
       restrict: 'E',
       template: '<div class="swoosh-cards" ng-transclude></div>',
       transclude: true,
-      scope: {},
+      scope: {
+        spacing: '@',
+        max: '@',
+      },
 
       controller: ['$scope', '$element', '$timeout', function($scope, $element, $timeout) {
 
         var cardCollection = new SwipeableCardCollection();
 
         $timeout(function() {
-          cardCollection.sortCards($element, $timeout);
+
+          var cards = $element[0].querySelectorAll('swoosh-card');
+
+          for(var i = 0; i < cards.length; i++){
+            cards[i].swipeableCard = new SwipeableCardView({
+              el: cards[i],
+              collection: cardCollection
+            })
+          }
+
+          cardCollection.collection = cards;
+
+          cardCollection.sortCards($timeout);
+
+        });
+
+        $scope.$on('removeCard', function(event, element, card) {
+          $timeout(function() {
+            cardCollection.moveCardsForward($element, $timeout);
+          }, 500);
         });
 
       }]

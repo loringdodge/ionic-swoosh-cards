@@ -56,8 +56,8 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.tinderCards'])
   }
 
   $scope.$on('removeCard', function(event, element, card) {
-    var discarded = $scope.cards.master.splice($scope.cards.master.indexOf(card), 1);
-    $scope.cards.discards.push(discarded);
+    // var discarded = $scope.cards.master.splice($scope.cards.master.indexOf(card), 1);
+    // $scope.cards.discards.push(discarded);
   });
 
   $scope.cardSwipedLeft = function(index) {

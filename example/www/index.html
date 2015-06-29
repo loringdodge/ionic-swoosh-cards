@@ -48,7 +48,7 @@
         </div>
       </div> -->
       <div ng-if="cards.active">
-        <swoosh-cards>
+        <swoosh-cards max="5">
           <swoosh-card ng-repeat="card in cards.active" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)">
             <div class="image" ng-controller="CardCtrl">
 
