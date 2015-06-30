@@ -21,13 +21,35 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.tinderCards'])
 .controller('CardsCtrl', function($scope, swooshCardDelegate, $timeout) {
 
   var cardTypes = [
-    { image: 'http://c4.staticflickr.com/4/3924/18886530069_840bc7d2a5_n.jpg' },
-    { image: 'http://c1.staticflickr.com/1/421/19046467146_548ed09e19_n.jpg' },
-    { image: 'http://c1.staticflickr.com/1/278/18452005203_a3bd2d7938_n.jpg' },
-    { image: 'http://c1.staticflickr.com/1/267/19067097362_72e9cee792_n.jpg' },
-    { image: 'http://c1.staticflickr.com/1/536/19072713515_5961d52357_n.jpg' },
-    { image: 'http://c4.staticflickr.com/4/3937/19072713775_156a560e09_n.jpg' },
-    { image: 'http://c1.staticflickr.com/1/297/19072713565_1b72e2e824_n.jpg' }
+    {
+      country: 'Switzerland',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      image: 'http://c4.staticflickr.com/4/3924/18886530069_840bc7d2a5_m.jpg',
+    }, {
+      country: 'Germany',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      image: 'http://c1.staticflickr.com/1/421/19046467146_548ed09e19_m.jpg'
+    }, {
+      country: 'Belgium',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      image: 'http://c1.staticflickr.com/1/278/18452005203_a3bd2d7938_m.jpg'
+    }, {
+      country: 'France',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      image: 'http://c1.staticflickr.com/1/297/19072713565_be3113bc67_m.jpg'
+    }, {
+      country: 'France',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      image: 'http://c1.staticflickr.com/1/536/19072713515_5961d52357_m.jpg'
+    }, {
+      country: 'France',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      image: 'http://c4.staticflickr.com/4/3937/19072713775_156a560e09_m.jpg'
+    }, {
+      country: 'France',
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      image: 'http://c1.staticflickr.com/1/267/19067097362_14d8ed9389_m.jpg'
+    }
   ];
 
   $scope.cards = {
@@ -55,7 +77,7 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.tinderCards'])
     });
   }
 
-  $scope.$on('removeCard', function(event, element, card) {
+  $scope.$on('discard', function(event, element, card) {
     // var discarded = $scope.cards.master.splice($scope.cards.master.indexOf(card), 1);
     // $scope.cards.discards.push(discarded);
   });

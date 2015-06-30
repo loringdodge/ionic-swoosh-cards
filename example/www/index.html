@@ -38,14 +38,16 @@
       </ion-header-bar>
       <div ng-if="cards.active">
         <swoosh-cards max="5">
-          <swoosh-card ng-repeat="card in cards.active" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)">
-            <div class="image" ng-controller="CardCtrl">
+          <swoosh-card ng-repeat="card in cards.active" on-destroy="cardDestroyed($index)">
+            <div ng-controller="CardCtrl">
 
               <div class="top">
-
+                <img ng-src="{{ card.image }}" />
               </div>
               <div class="bottom">
-                <div class="discard" ng-click="onClickTransitionOut(card)">DISCARD</div>
+                <h1>{{ card.country }}</h1>
+                <p>{{ card.text }}</p>
+                <div class="discard" ng-click="discard(card)">DISCARD</div>
               </div>
             </div>
           </swoosh-card>
