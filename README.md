@@ -22,10 +22,6 @@ on discard.
 
 ## Usage
 
-Just include 'nifty.modal.css' to index.html and add a modal template.
-
-## Usage
-
 Include `ionic.tdcards.js`, `collide.js` and `ionic.tdcards.css` after the rest of your Ionic and Angular includes. Add `ionic.contrib.ui.tinderCards` as a module dependency of your app. Then use the following AngularJS directives:
 
 ```html
