@@ -82,23 +82,4 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.tinderCards'])
     // $scope.cards.discards.push(discarded);
   });
 
-  $scope.cardSwipedLeft = function(index) {
-    console.log('LEFT SWIPE');
-    var card = $scope.cards.active[index];
-    $scope.cards.disliked.push(card);
-  };
-  $scope.cardSwipedRight = function(index) {
-    console.log('RIGHT SWIPE');
-    var card = $scope.cards.active[index];
-    $scope.cards.liked.push(card);
-  };
-
-    $scope.sayHello = function() {
-    console.log('Hello');
-  };
-
 })
-
-.controller('CardCtrl', function($scope, swooshCardDelegate) {
-
-});
