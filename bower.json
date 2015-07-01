@@ -1,15 +1,14 @@
 {
-  "name": "ionic-ion-tinder-cards",
+  "name": "ionic-swoosh-cards",
   "version": "1.0.0",
-  "codename": "lanthanum-leopard",
-  "homepage": "https://github.com/driftyco/ionic-contrib-tinder-cards",
+  "homepage": "https://github.com/loringdodge/ionic-swoosh-cards",
   "authors": [
-    "Max Lynch <max@drifty.com>"
+    "Loring Dodge <loringdodge@gmail.com>"
   ],
-  "description": "A tinder-style card UI for Ionic apps",
+  "description": "Swoosh card UI for Ionic mobile applications",
   "main": [
-    "ionic.tdcards.css",
-    "ionic.tdcards.js"
+    "ionic.swoosh.cards.css",
+    "ionic.swoosh.cards.js"
   ],
   "keywords": [
     "mobile",
@@ -17,7 +16,6 @@
     "ionic",
     "cordova",
     "phonegap",
-    "tinder",
     "angularjs",
     "angular"
   ],
