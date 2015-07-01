@@ -9,7 +9,6 @@ This is an extension of ...
 
 ...and is reminiscent of the cards found in the National Geographic app.
 No partial swiping is permitted and cards swoosh away on discard (click).
-on discard.
 
 [Demo](http://codepen.io/loringdodge/pen/ZGvMxE)
 
@@ -23,11 +22,31 @@ on discard.
 ## Usage
 
 ```html
+<div ng-if="cards.active">
+  <swoosh-cards spacing="30">
+    <swoosh-card ng-repeat="card in cards.active" on-destroy="cardDestroyed($index)">
+      <div ng-controller="CardCtrl">
 
+        <div class="top">
+          <img ng-src="{{ card.image }}" />
+        </div>
+        <div class="bottom">
+          <h1>{{ card.country }}</h1>
+          <p>{{ card.text }}</p>
+          <div class="discard" ng-click="discard(card)">DISCARD</div>
+        </div>
+      </div>
+    </swoosh-card>
+
+  </swoosh-cards>
+</div>
 ```
 
 To add new cards dynamically, just add them to the cards array:
 
-```javascript
 
-```
+## Directive Attributes
+
+| Name                   | Scope  | Options    | Action                                                        |
+|------------------------|--------|------------|---------------------------------------------------------------|
+| `spacing`              | @      | Number     | Number of pixels between each card                            |
