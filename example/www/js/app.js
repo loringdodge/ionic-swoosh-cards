@@ -1,4 +1,4 @@
-angular.module('starter', ['ionic', 'ionic.contrib.ui.tinderCards'])
+angular.module('starter', ['ionic', 'ionic.swoosh.cards'])
 
 
 .config(function($stateProvider, $urlRouterProvider) {
@@ -18,7 +18,7 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.tinderCards'])
   }
 })
 
-.controller('CardsCtrl', function($scope, swooshCardDelegate, $timeout) {
+.controller('CardsCtrl', function($scope, $timeout) {
 
   var cardTypes = [
     {
@@ -83,3 +83,7 @@ angular.module('starter', ['ionic', 'ionic.contrib.ui.tinderCards'])
   });
 
 })
+
+.controller('CardCtrl', function($scope) {
+
+});

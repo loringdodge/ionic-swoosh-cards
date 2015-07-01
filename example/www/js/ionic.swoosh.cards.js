@@ -80,7 +80,7 @@
     },
 
     calculateOpacity: function(index) {
-      return (0 + (index / 10));
+      return (0 + (index / 6));
     },
 
     calculateScale: function(index) {
@@ -134,7 +134,7 @@
       .start();
 
       // Trigger destroy after card has swiped out
-      this.destroy(1000);
+      this.destroy(700);
 
     },
 
@@ -146,7 +146,7 @@
 
       var card = this.el;
 
-      var overlay = card.childNodes[0].childNodes[0];
+      var overlay = card.childNodes[0].childNodes[1];
 
       var shadow = self.calculateBoxShadow(index);
       var opacity = self.calculateOpacity(index);
@@ -173,6 +173,12 @@
       .on('complete', function() {
         self.translateX = self.translateX - 30;
         self.scale = self.scale + 0.1;
+        if(index === 0 || self.collection.length === 1) {
+          var overlay = card.childNodes[0].childNodes[1];
+          var content = card.childNodes[0].childNodes[0];
+          self.setZindex(9, overlay);
+          self.setZindex(10, content);
+        }
       })
       .start();
 
@@ -185,7 +191,7 @@
 
       var card = this.el;
 
-      var overlay = card.childNodes[0].childNodes[0];
+      var overlay = card.childNodes[0].childNodes[1];
 
       self.translateX = self.calculateTranslateX(index);
       self.scale = self.calculateScale(index);
@@ -209,6 +215,12 @@
         self.setTransform('translate3d(' + self.translateX*v + 'px, 0, 0) scale('+ self.scale*v +')');
         self.setBoxShadow('0px 50px 100px rgba(0,0,0,'+ self.shadow +')');
         self.setOpacity(self.opacity, overlay);
+      })
+      .on('complete', function() {
+        // // var overlay = card.childNodes[0].childNodes[0];
+        // var cardLength = self.collection.length;
+        // // self.setZindex(cardLength - (i - 1), overlay);
+        // self.setZindex(cardLength - i);
       })
       .start();
 
@@ -250,8 +262,10 @@
         if(!card) continue;
 
         if(i === 0) {
-          var overlay = existingCards[i].childNodes[0].childNodes[0];
+          var overlay = existingCards[i].childNodes[0].childNodes[1];
+          var content = existingCards[i].childNodes[0].childNodes[0];
           existingCards[i].swipeableCard.setZindex(9, overlay);
+          existingCards[i].swipeableCard.setZindex(10, content);
         } else {
           (function(j) {
             $timeout(function() {
@@ -276,7 +290,7 @@
 
         var card = existingCards[i];
 
-        if(i === 0){
+        if(i === 0 || existingCards.length === 1){
           (function(j) {
             $timeout(function() {
               existingCards[j].swipeableCard.animateSwoosh(existingCards[j], j);
@@ -288,10 +302,6 @@
               existingCards[j].swipeableCard.animateStepForward(j - 1);
             }, 100 * j);
           })(i);
-          if(i === 1) {
-            var overlay = existingCards[i].childNodes[0].childNodes[0];
-            existingCards[i].swipeableCard.setZindex(9, overlay);
-          }
         }
       }
     }
@@ -301,13 +311,13 @@
   /***********************************
    * Swoosh Card Directive (singular)
    ***********************************/
-  angular.module('ionic.contrib.ui.tinderCards', ['ionic'])
+  angular.module('ionic.swoosh.cards', ['ionic'])
 
   .directive('swooshCard', ['$timeout', function($timeout) {
 
     return {
       restrict: 'E',
-      template: '<div class="swoosh-card"><div class="overlay"></div><div class="content" ng-transclude></div></div>',
+      template: '<div class="swoosh-card"><div class="content" ng-transclude></div><div class="overlay"></div></div>',
       require: '^swooshCards',
       transclude: true,
 
@@ -364,7 +374,9 @@
       controller: ['$scope', '$element', '$timeout', function($scope, $element, $timeout) {
 
         // Instantiate a new card collection
-        var cardCollection = new SwipeableCardCollection();
+        var cardCollection = new SwipeableCardCollection({
+          collection: []
+        });
 
         $timeout(function() {
 
@@ -376,12 +388,13 @@
             cards[i].swipeableCard = new SwipeableCardView({
               el: cards[i],
               collection: cardCollection,
-              spacing: ($scope.spacing) ? $scope.spacing : 30,
-              max: ($scope.max) ? $scope.max : 10
+              spacing: ($scope.spacing) ? $scope.spacing : 30
             })
+
+            cardCollection.collection.push(cards[i]);
           }
 
-          cardCollection.collection = cards;
+          cardCollection.max = ($scope.max) ? $scope.max : 10;
 
           // Sort the cards and display them at specified intervals
           cardCollection.sortCards($timeout);
@@ -398,14 +411,5 @@
       }]
     }
   }])
-
-  /***********************************
-   * Swoosh Card Factory
-   ***********************************/
-  .factory('swooshCardDelegate', ['$rootScope', function($rootScope) {
-    return {
-
-    }
-  }]);
 
 })(window.ionic);

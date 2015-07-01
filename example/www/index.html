@@ -37,7 +37,7 @@
         <h1 class="title">Ionic Swoosh Cards</h1>
       </ion-header-bar>
       <div ng-if="cards.active">
-        <swoosh-cards max="5">
+        <swoosh-cards spacing="30">
           <swoosh-card ng-repeat="card in cards.active" on-destroy="cardDestroyed($index)">
             <div ng-controller="CardCtrl">
 

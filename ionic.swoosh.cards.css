@@ -1,29 +1,14 @@
-.background-grey {
-  background-color: #333;
-}
-
-.td-title {
-  position: absolute;
-  top: 70px;
-  width: 100%;
-  text-align: center;
-}
-
-.td-title span {
-  font-weight: bold;
-}
-
+/* CORE */
 swoosh-cards {
   display: block;
 }
 
 swoosh-card {
   position: absolute;
-  top: calc(50% - 150px);
+  top: calc(50% - 175px);
   left: calc(50% - 100px);
   width: 200px;
-  height: 300px;
-/*  box-shadow: 0px 50px 100px rgba(0,0,0,0.5);*/
+  height: 350px;
   border-radius: 6px;
   background-color: #FFF;
   overflow: hidden;
@@ -37,7 +22,6 @@ swoosh-card .overlay {
   height: 100%;
   background-color: #333;
   opacity: 0;
-  z-index: 11;
 }
 
 swoosh-card .content {
@@ -46,14 +30,21 @@ swoosh-card .content {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10;
 }
 
+/* DEMO */
 swoosh-card .top {
+  position: relative;
   width: 100%;
-  height: 35%;
+  height: 40%;
   border-radius: 4px 4px 0 0;
   background-color: #CCC;
+  overflow: hidden;
+}
+
+swoosh-card img {
+  position: relative;
+  width: 100%;
 }
 
 swoosh-card .bottom {
@@ -62,53 +53,31 @@ swoosh-card .bottom {
   border-radius: 0 0 4px 4px;
 }
 
-.yes-text {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 30px;
-  color: #4CAF50;
-  opacity: 0;
+swoosh-card .bottom h1 {
+  margin: 10px 0 0 0;
+  font-size: 14px;
+  text-align: center;
 }
 
-.no-text {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 30px;
-  color: #F44336;
-  opacity: 0;
+swoosh-card .bottom p {
+  margin: 10px 15px;
 }
 
 .discard {
   position: absolute;
-  left: calc(50% - 45px);
-  bottom: 20px;
-  padding: 10px 15px;
+  left: calc(50% - 35px);
+  bottom: 10px;
+  padding: 7px 10px;
   color: #FFF;
   font-weight: bold;
+  font-size: 12px;
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 20px 20px 20px 20px;
 }
 
-swoosh-card#end-card {
-  background-color: none;
-  box-shadow: none;
-  border-radius: none;
+.background-grey {
+  background-color: #333;
 }
 
-#end-card i {
-  position: absolute;
-  top: calc(50% - 55px);
-  left: calc(50% - 40px);
-  font-size: 100px;
-}
-
-
-.fade {
-  -webkit-transition: 0.2s opacity linear;
-  transition: 0.2s opacity linear;
-  opacity: 0;
-}
 
 

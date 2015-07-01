@@ -23,7 +23,6 @@ swoosh-card .overlay {
   height: 100%;
   background-color: #333;
   opacity: 0;
-  z-index: 11;
 }
 
 swoosh-card .content {
@@ -32,11 +31,11 @@ swoosh-card .content {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10;
 }
 
 /* DEMO */
 swoosh-card .top {
+  position: relative;
   width: 100%;
   height: 40%;
   border-radius: 4px 4px 0 0;
@@ -45,6 +44,7 @@ swoosh-card .top {
 }
 
 swoosh-card img {
+  position: relative;
   width: 100%;
 }
 
