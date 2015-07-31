@@ -8,7 +8,7 @@
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
-    <!-- tdcards css -->
+    <!-- swooshcards css -->
     <link rel="stylesheet" href="css/ionic.swoosh.cards.css">
 
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
@@ -20,7 +20,7 @@
     <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
 
-    <!-- tdcards js -->
+    <!-- swooshcards js -->
     <script src="js/ionic.swoosh.cards.js"></script>
 
     <!-- cordova script (this will be a 404 during development) -->
@@ -38,7 +38,7 @@
       </ion-header-bar>
       <div ng-if="cards.active">
         <swoosh-cards spacing="30">
-          <swoosh-card ng-repeat="card in cards.active" on-destroy="cardDestroyed($index)">
+          <swoosh-card ng-repeat="card in cards.active">
             <div ng-controller="CardCtrl">
 
               <div class="top">
@@ -51,7 +51,6 @@
               </div>
             </div>
           </swoosh-card>
-
         </swoosh-cards>
       </div>
 

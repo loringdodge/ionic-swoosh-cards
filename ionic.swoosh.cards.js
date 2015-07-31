@@ -216,12 +216,6 @@
         self.setBoxShadow('0px 50px 100px rgba(0,0,0,'+ self.shadow +')');
         self.setOpacity(self.opacity, overlay);
       })
-      .on('complete', function() {
-        // // var overlay = card.childNodes[0].childNodes[0];
-        // var cardLength = self.collection.length;
-        // // self.setZindex(cardLength - (i - 1), overlay);
-        // self.setZindex(cardLength - i);
-      })
       .start();
 
     }
@@ -411,14 +405,5 @@
       }]
     }
   }])
-
-  /***********************************
-   * Swoosh Card Factory
-   ***********************************/
-  .factory('swooshCardDelegate', ['$rootScope', function($rootScope) {
-    return {
-
-    }
-  }]);
 
 })(window.ionic);
