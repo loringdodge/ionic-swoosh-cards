@@ -26,7 +26,6 @@ No partial swiping is permitted and cards swoosh away on discard (click).
   <swoosh-cards spacing="30">
     <swoosh-card ng-repeat="card in cards.active" on-destroy="cardDestroyed($index)">
       <div ng-controller="CardCtrl">
-
         <div class="top">
           <img ng-src="{{ card.image }}" />
         </div>
@@ -37,7 +36,6 @@ No partial swiping is permitted and cards swoosh away on discard (click).
         </div>
       </div>
     </swoosh-card>
-
   </swoosh-cards>
 </div>
 ```
